@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Will You Be My Valentine?</title>
+<style>
+/* --------- CSS --------- */
+body {
+  margin: 0;
+  font-family: 'Georgia', serif;
+  background: linear-gradient(120deg, #ffe3e3, #f3d1f4);
+  text-align: center;
+  overflow-x: hidden;
+}
+
+h1 {
+  font-size: 3em;
+  margin-top: 50px;
+  color: #fff;
+  text-shadow: 2px 2px 8px #ff7eb3;
+}
+
+button {
+  padding: 15px 30px;
+  margin: 20px;
+  font-size: 1.5em;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  color: #fff;
+}
+
+button#yes { background: #ff4da6; }
+button#no { background: #ffa6d9; }
+
+button:hover { transform: scale(1.1); }
+
+.hidden { display: none; }
+
+.gifts {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.gift {
+  width: 150px;
+  height: 150px;
+  background: #ffb6c1;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2em;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease;
+  position: relative;
+}
+
+.gift:hover { transform: scale(1.1); }
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 550px;
+  background: #fff8e1; /* vintage paper color */
+  border: 5px solid #d9b382;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  display: none;
+  z-index: 1000;
+  font-family: 'Courier New', monospace;
+  color: #5b3a29;
+}
+
+.letter-content {
+  max-height: 400px;
+  overflow-y: auto;
+  text-align: left;
+  padding: 15px;
+  line-height: 1.5em;
+  background: url('https://i.pinimg.com/originals/eb/35/22/eb3522e1d5b6b0f7f447b9f9858237c0.jpg') no-repeat center;
+  background-size: cover;
+  border-radius: 15px;
+  box-shadow: inset 0 0 15px rgba(0,0,0,0.1);
+  position: relative;
+}
+
+.popup h2 { color: #d94e8a; text-align:center; }
+.close-btn { position: absolute; top: 10px; right: 15px; cursor: pointer; color: #d94e8a; font-weight: bold; font-size: 1.5em; }
+
+.confetti { position: fixed; width: 100%; height: 100%; pointer-events: none; top: 0; left: 0; z-index: 999; }
+
+.heart-floating {
+  position: fixed;
+  pointer-events: none;
+  z-index: 0;
+  animation: floatRandom 10s linear infinite;
+}
+
+@keyframes floatRandom {
+  0% { transform: translateY(100vh) translateX(0) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translateY(-100vh) translateX(50px) rotate(360deg); opacity: 0; }
+}
+
+.letter-heart {
+  position: absolute;
+  font-size: 20px;
+  animation: floatUp 5s linear forwards;
+  pointer-events: none;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(100%); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translateY(-150%); opacity: 0; }
+}
+
+.lyrics { text-align: left; margin-top: 10px; font-size: 0.9em; line-height: 1.4em; }
+
+#celebration {
+  font-size: 2.5em;
+  color: #ff4da6;
+  margin-top: 50px;
+  display: none;
+  animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse { 0% { transform: scale(1); } 100% { transform: scale(1.1); } }
+
+/* Vintage scroll style for letter */
+.letter-content::-webkit-scrollbar { width: 10px; }
+.letter-content::-webkit-scrollbar-track { background: #fff8e1; border-radius: 10px; }
+.letter-content::-webkit-scrollbar-thumb { background: #d9b382; border-radius: 10px; }
+</style>
+</head>
+<body>
+
+<h1 id="question">Will you be my Valentine?</h1>
+<button id="yes">YES</button>
+<button id="no">NO</button>
+
+<div class="confetti" id="confetti"></div>
+
+<div id="celebration">YAYYYYY LETSSS GOOO LOVEEE YOUUUU 💓</div>
+
+<div class="gifts hidden" id="gifts">
+  <div class="gift" id="gift1">Gift 1</div>
+  <div class="gift" id="gift2">Gift 2</div>
+  <div class="gift" id="gift3">Gift 3</div>
+</div>
+
+<!-- Popups -->
+<div class="popup" id="popup1">
+  <span class="close-btn" onclick="closePopup('popup1')">&times;</span>
+  <h2>Love Letter 💌</h2>
+  <div class="letter-content" id="letterContent">
+<p>Idkkk how you entered my life or what suddenly shifted the way I saw you, but ik for sure that it only made things better!! I am sooo in loveeee with you and I am sooo fckng scared of losing you.</p>
+
+<p>Ik we are too young to promise forever, but I promise when you are going through hard shiii, it’s us who’s going thru it, not only you… Let's sort things together and we will be alright. It's always us, okay??? We will be fine and let's take care together!! You are the most awesome thing that’s happened to me so far and it would really be the coolest shiii if we went to the same clg together!!! And as I’m telling you again, everything will be alright — let's grow together, solve shiii together, and rock together, okieee???</p>
+
+<p>I just wanna show you all the ways someone can be loved. I wanna love you the way no one has ever experienced before… I wanna give you all the roller coaster of emotions you can go thru — all the excitement, happiness, and all shiii. I want you to be only happy, and I would go to any extent to do it for ya, JUST LYK I LET THE WORLD BURN FOR YOU TYPE hehe lolll — let others live on Mars.</p>
+
+<p>Ikk we both are shy and we know I turn away whenever you catch me seeing you, but yeahhh suree paathupom — ni azhaga irukurathu en thappa??? Maripidi, ni azhaga illa athu ithu nu sollatha, I will punch you okay? You look damnnn pretty and start loving yourself first, loosu.</p>
+
+<p>And let’s do all the crazy shiii together!!! All the late night drives, icecreams, movies, trampoline parks, haunted houses, late-night cooking competitions, and shiii. Let's solve all the mysterious stuff, be the best frnds everyone yearns for, and let's make every1 realise how beautiful love can look. Everytym we’re not happy — I mean we have to be happy — but when there are ups and downs, let’s calmly talk through it and solve it with no misunderstandings, okeyy???</p>
+
+<p>I just wanna give u all the love you deserve. I really loveeee you a lotttt!!! Ikkk you told me you don't believe in Valentine’s Day, but still, it’s just lyk Mother’s Day — it’s just Lovers’ Day, and ig let’s embrace ourselves ryt? 💖</p>
+
+<p>And congrats winning your 3 yrs crush over… which is me hehehe 💘</p>
+  </div>
+</div>
+
+<div class="popup" id="popup2">
+  <span class="close-btn" onclick="closePopup('popup2')">&times;</span>
+  <h2>Our Song 🎵</h2>
+  <iframe width="100%" height="150" src="https://www.youtube.com/embed/2Vv-BfVoq4g?autoplay=1&mute=1" title="YouTube video" frameborder="0" allowfullscreen></iframe>
+  <div class="lyrics">
+'Cause we were just kids when we fell in love<br>
+Not knowin' what it was<br>
+I will not give you up this time<br>
+Darling, just kiss me slow<br>
+Your heart is all I own<br>
+And in your eyes, you're holdin' mine<br>
+Baby, I'm dancin' in the dark<br>
+With you between my arms<br>
+Barefoot on the grass<br>
+Listenin' to our favourite song<br>
+When you said you looked a mess<br>
+I whispered underneath my breath<br>
+But you heard it<br>
+Darling, you look perfect tonight
+  </div>
+</div>
+
+<div class="popup" id="popup3">
+  <span class="close-btn" onclick="closePopup('popup3')">&times;</span>
+  <h2>Our Special Messages 💖</h2>
+  <div class="letter-content">
+    <p>💘 From the start song la That when I talk to you, oh, Cupid walks right through and shoots an arrow through my heart nu thonum everytym i see you</p>
+    <p>💖 You are always sooo pretty in my eyes ✨</p>
+    <p>💞 It’s always ‘we’ and not just you alone — let’s face everything together 💖</p>
+  </div>
+</div>
+
+<script>
+// --------- JS ---------
+const noBtn = document.getElementById('no');
+const yesBtn = document.getElementById('yes');
+const question = document.getElementById('question');
+const gifts = document.getElementById('gifts');
+const celebration = document.getElementById('celebration');
+const letterContent = document.getElementById('letterContent');
+
+const noMessages = [
+  "How dare you!?",
+  "You got some nerve ah?",
+  "Then who u gonna pick?",
+  "Is it Sashank?",
+  "Ohhh Aadharsh ahh??",
+  "Ikkk you wld pick him!!",
+  "Dei poi avaney vechuko",
+  "Po na ethuku unaku?",
+  "I go pick Iniya!!",
+  "Ahhh I will go with Navi",
+  "But you are the one i need",
+  "But you don't need me",
+  "Huhhh but u chose me",
+  "Imma not leaving anywhere",
+  "SAY YES 😤"
+];
+
+let noIndex = 0;
+noBtn.addEventListener('click', () => {
+  question.textContent = noMessages[noIndex];
+  noIndex++;
+  if(noIndex >= noMessages.length){ noBtn.style.display = 'none'; yesBtn.style.transform = 'scale(1.2)'; }
+});
+
+yesBtn.addEventListener('click', () => {
+  question.style.display = 'none';
+  yesBtn.style.display = 'none';
+  celebration.style.display = 'block';
+  startConfetti();
+  startLetterHearts();
+  setTimeout(() => { celebration.style.display = 'none'; gifts.classList.remove('hidden'); }, 2000);
+});
+
+function startConfetti(){
+  for(let i=0;i<100;i++){
+    const heart = document.createElement('div');
+    heart.classList.add('heart-floating');
+    const colors = ['💖','💗','💓','💞','💕','💘','💝'];
+    heart.textContent = colors[Math.floor(Math.random()*colors.length)];
+    heart.style.left = Math.random()*100 + 'vw';
+    heart.style.fontSize = (15 + Math.random()*25) + 'px';
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),10000);
+  }
+}
+
+setInterval(() => {
+  const heart = document.createElement('div');
+  heart.classList.add('heart-floating');
+  const colors = ['💖','💗','💓','💞','💕','💘','💝'];
+  heart.textContent = colors[Math.floor(Math.random()*colors.length)];
+  heart.style.left = Math.random()*100 + 'vw';
+  heart.style.fontSize = (15 + Math.random()*25) + 'px';
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),10000);
+}, 500);
+
+function startLetterHearts(){
+  setInterval(() => {
+    const heart = document.createElement('div');
+    heart.classList.add('letter-heart');
+    const colors = ['💖','💗','💓','💞','💕','💘','💝'];
+    heart.textContent = colors[Math.floor(Math.random()*colors.length)];
+    heart.style.left = Math.random()*80 + '%';
+    heart.style.top = '100%';
+    heart.style.fontSize = (15 + Math.random()*15) + 'px';
+    letterContent.appendChild(heart);
+    setTimeout(()=>heart.remove(),5000);
+  }, 700);
+}
+
+// Gifts & Popups
+document.getElementById('gift1').addEventListener('click', () => { document.getElementById('popup1').style.display = 'block'; });
+document.getElementById('gift2').addEventListener('click', () => { document.getElementById('popup2').style.display = 'block'; });
+document.getElementById('gift3').addEventListener('click', () => { document.getElementById('popup3').style.display = 'block'; });
+
+function closePopup(id){ document.getElementById(id).style.display = 'none'; }
+</script>
+
+</body>
+</html>
